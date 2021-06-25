@@ -1,26 +1,50 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.ScrollPane;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
+	
+	private static Scene mainScene;
+	
+	/*Implementing abstract method from Application
+	 * class. We load and show a MainView.fxml. 
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
+			//load MainView
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
+			ScrollPane scrollPane = loader.load();
+			
+			//methods to fix menubar
+			scrollPane.setFitToHeight(true);
+			scrollPane.setFitToWidth(true);
+			
+			//create a scene with an empty AnchorPane
+			mainScene = new Scene(scrollPane);
+			
+			//Set a mainscene and a title.
+			primaryStage.setScene(mainScene);
+			primaryStage.setTitle("Sample JavaFx application");
 			primaryStage.show();
-		} catch(Exception e) {
+		} 
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	public static Scene getMainScene() {
+		return mainScene;
+	}
+	
+	//main method
 	public static void main(String[] args) {
+		//Static method to start JavaFx
 		launch(args);
 	}
 }
